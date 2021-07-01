@@ -3,11 +3,15 @@ import React from 'react';
 import Content from './Content';
 import Header from './Header';
 
-const Course = ({ course }) => {
+const Course = ({ courses }) => {
   return (
     <div className="flex flex-col items-center">
-      <Header course={course} />
-      <Content course={course} />
+      <Header />
+      {courses.map((course, index) => (
+        <div key={index}>
+          <Content course={course} />
+        </div>
+      ))}
     </div>
   );
 };
