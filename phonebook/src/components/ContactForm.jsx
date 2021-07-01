@@ -3,10 +3,16 @@ import React, { useState } from 'react';
 const ContactForm = ({ setPersons, persons }) => {
   const [newName, setNewName] = useState('');
 
+  const names = persons.map((person) => person.name.toLowerCase());
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newPerson = { name: newName };
-    setPersons([...persons, newPerson]);
+    if (names.includes(newName.toLowerCase())) {
+      alert(`${newName} is already added to the phone book`);
+    } else {
+      const newPerson = { name: newName };
+      setPersons([...persons, newPerson]);
+    }
     setNewName('');
   };
 
