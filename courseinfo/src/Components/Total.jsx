@@ -1,11 +1,10 @@
 import React from 'react';
 
 const Total = ({ course }) => {
-  const sum =
-    course.parts[0].exercises +
-    course.parts[1].exercises +
-    course.parts[2].exercises;
-  return <p>Number of exercises {sum}</p>;
+  const exercises = course.parts.map((part) => part.exercises);
+  const sum = exercises.reduce((accumulator, current) => accumulator + current);
+
+  return <p className="sm:text-xl font-bold">Totall of {sum} exercises</p>;
 };
 
 export default Total;
