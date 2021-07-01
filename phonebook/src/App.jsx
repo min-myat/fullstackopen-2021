@@ -4,7 +4,9 @@ import ContactInfo from './components/ContactInfo';
 import Header from './components/Header';
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: 'Arto Hellas' }]);
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '22-364-789', id: 1 },
+  ]);
 
   return (
     <div className="flex flex-col items-center">

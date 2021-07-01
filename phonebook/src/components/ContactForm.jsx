@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 const ContactForm = ({ setPersons, persons }) => {
   const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
 
   const names = persons.map((person) => person.name.toLowerCase());
 
@@ -10,9 +11,14 @@ const ContactForm = ({ setPersons, persons }) => {
     if (names.includes(newName.toLowerCase())) {
       alert(`${newName} is already added to the phone book`);
     } else {
-      const newPerson = { name: newName };
+      const newPerson = {
+        name: newName,
+        id: persons.length + 1,
+        number: newNumber,
+      };
       setPersons([...persons, newPerson]);
     }
+    setNewNumber('');
     setNewName('');
   };
 
@@ -22,9 +28,10 @@ const ContactForm = ({ setPersons, persons }) => {
         Add Contact
       </label>
       <div className="my-4" />
-      <div className="flex justify-center items-center space-x-10 mx-8">
+      <div className="grid gap-3 mx-8">
         <div>
           <input
+            required
             id="name"
             type="text"
             placeholder="Name"
@@ -33,6 +40,15 @@ const ContactForm = ({ setPersons, persons }) => {
           />
         </div>
         <div>
+          <input
+            required
+            type="text"
+            placeholder="Number"
+            value={newNumber}
+            onChange={(e) => setNewNumber(e.target.value)}
+          />
+        </div>
+        <div className="justify-self-center mt-4">
           <button className="btn" type="submit">
             add
           </button>
