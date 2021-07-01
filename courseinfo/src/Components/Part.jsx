@@ -2,9 +2,9 @@ import React from 'react';
 
 const Part = ({ part }) => {
   return (
-    <p className="text-xl">
-      {part.name} {part.exercises}
-    </p>
+    <div className="sm:text-xl flex">
+      <div className="w-56 sm:w-64">{part.name}</div> {part.exercises}
+    </div>
   );
 };
 

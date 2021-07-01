@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Part from './Part';
+import Total from './Total';
 
 const Content = ({ course }) => {
   return (
@@ -10,6 +11,8 @@ const Content = ({ course }) => {
           <Part part={part} />
         </div>
       ))}
+      <hr className="my-6" />
+      <Total course={course} />
     </div>
   );
 };
