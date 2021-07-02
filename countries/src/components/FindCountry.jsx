@@ -1,11 +1,43 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
 const FindCountry = ({ countries }) => {
   const [inputValue, setInputValue] = useState('');
+  const [weather, setWeather] = useState();
+  const [foundCountries, setFoundCountries] = useState([]);
 
-  const foundCountries = countries.filter((country) =>
-    country.name.toLowerCase().includes(inputValue.toLowerCase())
-  );
+  useEffect(() => {
+    setFoundCountries(
+      countries.filter((country) =>
+        country.name.toLowerCase().includes(inputValue.toLowerCase())
+      )
+    );
+  }, [inputValue]);
+
+  useEffect(() => {
+    const key = import.meta.env.VITE_API_KEY;
+    if (foundCountries.length === 1) {
+      const country = foundCountries[0];
+
+      const timeoutId = setTimeout(() => {
+        axios
+          .get(
+            `https://api.openweathermap.org/data/2.5/weather?q=${country.capital}&appid=${key}&units=metric`
+          )
+          .then(({ data }) => {
+            console.log('fetching');
+            setWeather(data);
+          })
+          .catch((error) => console.log(error.message));
+      }, 500);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [foundCountries]);
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
 
   const handleClick = (country) => {
     setInputValue(country.name);
@@ -20,6 +52,7 @@ const FindCountry = ({ countries }) => {
 
     if (foundCountries.length === 1) {
       const country = foundCountries[0];
+
       return (
         <>
           <h1 className="font-bold text-2xl text-green-600">{country.name}</h1>
@@ -35,7 +68,7 @@ const FindCountry = ({ countries }) => {
             </h1>
           </div>
 
-          <div className="my-5">
+          <div className="my-">
             <h1 className="font-semibold text-lg">Languages</h1>
             <ul className="list-disc">
               {country.languages.map((lang) => (
@@ -51,6 +84,28 @@ const FindCountry = ({ countries }) => {
           <div className="flex justify-center items-center mt-6 py-4 rounded bg-gray-50">
             <img src={country.flag} alt="flag" width={250} />
           </div>
+          {weather && <hr className="my-4" />}
+          {weather && (
+            <div className="my-5">
+              <h1 className="font-semibold text-lg">
+                Weather in {country.capital}
+              </h1>
+              <p className="mt-1">
+                <span className="font-semibold mr-6">Temperature</span>{' '}
+                {weather.main.temp} C
+              </p>
+              <p className="mt-1">
+                <span className="font-semibold mr-6">
+                  {weather.weather[0].main}
+                </span>{' '}
+                {weather.weather[0].description}
+              </p>
+              <p className="mt-1">
+                <span className="font-semibold mr-6">Wind </span>{' '}
+                {weather.wind.speed} mph
+              </p>
+            </div>
+          )}
         </>
       );
     }
@@ -73,7 +128,7 @@ const FindCountry = ({ countries }) => {
         type="text"
         placeholder="find country"
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e) => handleInputChange(e)}
       />
       <div className="mt-6">{renderFound()}</div>
     </>
