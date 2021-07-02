@@ -11,7 +11,25 @@ const ContactForm = ({ setPersons, persons }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (names.includes(newName.toLowerCase())) {
-      alert(`${newName} is already added to the phone book`);
+      if (
+        window.confirm(
+          `${newName} is already added to the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const personToChange = persons.find(
+          (person) => person.name.toLowerCase() === newName.toLowerCase()
+        );
+        const changedPerson = { ...personToChange, number: newNumber };
+        contactServices
+          .edit(personToChange.id, changedPerson)
+          .then((data) =>
+            setPersons(
+              persons.map((person) =>
+                person.id === personToChange.id ? data : person
+              )
+            )
+          );
+      }
     } else {
       const newPerson = {
         name: newName,
