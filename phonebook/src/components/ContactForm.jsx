@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const ContactForm = ({ setPersons, persons }) => {
   const [newName, setNewName] = useState('');
@@ -16,7 +17,9 @@ const ContactForm = ({ setPersons, persons }) => {
         id: persons.length + 1,
         number: newNumber,
       };
-      setPersons([...persons, newPerson]);
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(({ data }) => setPersons([...persons, data]));
     }
     setNewNumber('');
     setNewName('');
