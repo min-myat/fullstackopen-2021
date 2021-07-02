@@ -13,15 +13,33 @@ const App = () => {
     personServices.getAll().then((datas) => setPersons(datas));
   }, []);
 
+  const handleDelete = (id) => {
+    if (
+      window.confirm(
+        `Delete ${persons.find((person) => person.id === id).name}?`
+      )
+    ) {
+      personServices
+        .deletePerson(id)
+        .then((response) =>
+          setPersons(persons.filter((person) => person.id !== id))
+        );
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center mb-4">
+    <div className="flex flex-col items-center mb-10">
       <Header />
-      <div className="mt-10 p-5 bg-white max-w-lg rounded shadow-md w-11/12 sm:w-[500px] md:w-[750px]">
-        <Search persons={persons} />
+      <div className="mt-10 p-5 bg-white rounded shadow-md max-w-4xl">
+        <Search persons={persons} handleDelete={handleDelete} />
         <hr className="my-10" />
         <ContactForm persons={persons} setPersons={setPersons} />
         <hr className="my-10" />
-        <ContactInfo persons={persons} />
+        <ContactInfo
+          setPersons={setPersons}
+          persons={persons}
+          handleDelete={handleDelete}
+        />
       </div>
     </div>
   );
