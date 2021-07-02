@@ -5,7 +5,7 @@ const Search = ({ persons, handleDelete }) => {
   const [inputValue, setInputValue] = useState('');
 
   const found = persons.filter((person) =>
-    person.name.toLowerCase().includes(inputValue)
+    person.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   const renderFound = () => {
@@ -27,7 +27,7 @@ const Search = ({ persons, handleDelete }) => {
         placeholder="Filter by name"
         className="my-4"
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value.toLowerCase())}
+        onChange={(e) => setInputValue(e.target.value)}
       />
       {renderFound()}
     </div>

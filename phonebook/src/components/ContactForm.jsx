@@ -7,7 +7,7 @@ const ContactForm = ({ setPersons, persons }) => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [message, setMessage] = useState(null);
-
+  const [type, setType] = useState();
   const names = persons.map((person) => person.name.toLowerCase());
 
   const handleSubmit = (event) => {
@@ -24,15 +24,24 @@ const ContactForm = ({ setPersons, persons }) => {
         const changedPerson = { ...personToChange, number: newNumber };
         contactServices
           .edit(personToChange.id, changedPerson)
-          .then((data) =>
+          .then((data) => {
             setPersons(
               persons.map((person) =>
                 person.id === personToChange.id ? data : person
               )
-            )
-          );
-        setMessage(`Edited ${personToChange.name}`);
-        setTimeout(() => setMessage(null), 3000);
+            );
+            setMessage(`Edited ${personToChange.name}`);
+            setType('success');
+            setTimeout(() => setMessage(null), 3000);
+          })
+          .catch((error) => {
+            setMessage(
+              `${personToChange.name} is already removed from the phone book`
+            );
+            setType('error');
+            contactServices.getAll().then((datas) => setPersons(datas));
+            setTimeout(() => setMessage(null), 3000);
+          });
       }
     } else {
       const newPerson = {
@@ -44,6 +53,7 @@ const ContactForm = ({ setPersons, persons }) => {
         .create(newPerson)
         .then((person) => setPersons(persons.concat(person)));
       setMessage(`Added a new number`);
+      setType('success');
       setTimeout(() => setMessage(null), 2000);
     }
     setNewNumber('');
@@ -84,7 +94,7 @@ const ContactForm = ({ setPersons, persons }) => {
           </div>
         </div>
       </form>
-      <Notification type="success" message={message} />
+      <Notification type={type} message={message} />
     </div>
   );
 };
