@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
+import personServices from '../services/persons';
 import ContactForm from './components/ContactForm';
 import ContactInfo from './components/ContactInfo';
 import Header from './components/Header';
@@ -10,8 +10,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
 
   useEffect(() => {
-    const url = 'http://localhost:3001/persons';
-    axios.get(url).then(({ data }) => setPersons(data));
+    personServices.getAll().then((datas) => setPersons(datas));
   }, []);
 
   return (
