@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import personServices from '../services/persons';
+import contactServices from '../services/persons';
 import ContactForm from './components/ContactForm';
 import ContactInfo from './components/ContactInfo';
 import Header from './components/Header';
@@ -12,7 +12,7 @@ const App = () => {
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    personServices.getAll().then((datas) => setPersons(datas));
+    contactServices.getAll().then((datas) => setPersons(datas));
   }, []);
 
   const handleDelete = (id) => {
@@ -21,7 +21,7 @@ const App = () => {
         `Delete ${persons.find((person) => person.id === id).name}?`
       )
     ) {
-      personServices
+      contactServices
         .deletePerson(id)
         .then((response) =>
           setPersons(persons.filter((person) => person.id !== id))
