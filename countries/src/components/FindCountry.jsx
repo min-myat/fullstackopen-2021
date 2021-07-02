@@ -4,8 +4,12 @@ const FindCountry = ({ countries }) => {
   const [inputValue, setInputValue] = useState('');
 
   const foundCountries = countries.filter((country) =>
-    country.name.toLowerCase().includes(inputValue)
+    country.name.toLowerCase().includes(inputValue.toLowerCase())
   );
+
+  const handleClick = (country) => {
+    setInputValue(country.name);
+  };
 
   const renderFound = () => {
     if (!inputValue) return null;
@@ -18,7 +22,7 @@ const FindCountry = ({ countries }) => {
       const country = foundCountries[0];
       return (
         <>
-          <h1 className="font-bold text-xl">{country.name}</h1>
+          <h1 className="font-bold text-2xl text-green-600">{country.name}</h1>
 
           <div className="my-5">
             <h1 className="font-semibold">
@@ -44,14 +48,22 @@ const FindCountry = ({ countries }) => {
             </ul>
           </div>
 
-          <div className="flex justify-center items-center mt-6">
+          <div className="flex justify-center items-center mt-6 py-4 rounded bg-gray-50">
             <img src={country.flag} alt="flag" width={250} />
           </div>
         </>
       );
     }
+
     return foundCountries.map((country) => {
-      return <div key={country.alpha3Code}>{country.name}</div>;
+      return (
+        <div key={country.alpha3Code} className="my-4">
+          <span className="mr-3">{country.name} </span>
+          <button onClick={() => handleClick(country)} className="btn">
+            show
+          </button>
+        </div>
+      );
     });
   };
 
@@ -61,7 +73,7 @@ const FindCountry = ({ countries }) => {
         type="text"
         placeholder="find country"
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value.toLowerCase())}
+        onChange={(e) => setInputValue(e.target.value)}
       />
       <div className="mt-6">{renderFound()}</div>
     </>

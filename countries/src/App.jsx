@@ -18,7 +18,7 @@ function App() {
       </div>
 
       {countries && (
-        <div className="w-1/2 bg-white rounded shadow-md p-6">
+        <div className="w-1/2 bg-white rounded shadow-md p-6 mb-8">
           <FindCountry countries={countries} />
         </div>
       )}
