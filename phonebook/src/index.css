@@ -12,4 +12,7 @@
   .btn {
     @apply bg-sky-400 py-2 px-6 uppercase transition-colors text-white font-bold tracking-wide text-sm rounded-md shadow hover:bg-sky-300 focus:outline-none focus:ring focus:ring-offset-1 focus:ring-sky-400 focus:ring-opacity-75 active:bg-sky-500;
   }
+  .btn-delete {
+    @apply bg-red-400 py-1 px-4 uppercase transition-colors text-white font-bold tracking-wide text-xs rounded-md shadow hover:bg-red-300 focus:outline-none focus:ring focus:ring-offset-1 focus:ring-red-400 focus:ring-opacity-75 active:bg-red-500;
+  }
 }
