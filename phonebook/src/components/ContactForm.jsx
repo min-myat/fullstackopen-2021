@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
 import contactServices from '../../services/persons';
+import Notification from './Notification';
 
 const ContactForm = ({ setPersons, persons }) => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [message, setMessage] = useState(null);
 
   const names = persons.map((person) => person.name.toLowerCase());
 
@@ -29,6 +31,8 @@ const ContactForm = ({ setPersons, persons }) => {
               )
             )
           );
+        setMessage(`Edited ${personToChange.name}`);
+        setTimeout(() => setMessage(null), 3000);
       }
     } else {
       const newPerson = {
@@ -39,44 +43,49 @@ const ContactForm = ({ setPersons, persons }) => {
       contactServices
         .create(newPerson)
         .then((person) => setPersons(persons.concat(person)));
+      setMessage(`Added a new number`);
+      setTimeout(() => setMessage(null), 2000);
     }
     setNewNumber('');
     setNewName('');
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="name" className="py-4 font-bold">
-        Add Contact
-      </label>
-      <div className="my-4" />
-      <div className="grid gap-3 mx-8">
-        <div>
-          <input
-            required
-            id="name"
-            type="text"
-            placeholder="Name"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-          />
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="name" className="py-4 font-bold">
+          Add Contact
+        </label>
+        <div className="my-4" />
+        <div className="grid gap-3 mx-8">
+          <div>
+            <input
+              required
+              id="name"
+              type="text"
+              placeholder="Name"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+            />
+          </div>
+          <div>
+            <input
+              required
+              type="text"
+              placeholder="Number"
+              value={newNumber}
+              onChange={(e) => setNewNumber(e.target.value)}
+            />
+          </div>
+          <div className="justify-self-center mt-4">
+            <button className="btn" type="submit">
+              add
+            </button>
+          </div>
         </div>
-        <div>
-          <input
-            required
-            type="text"
-            placeholder="Number"
-            value={newNumber}
-            onChange={(e) => setNewNumber(e.target.value)}
-          />
-        </div>
-        <div className="justify-self-center mt-4">
-          <button className="btn" type="submit">
-            add
-          </button>
-        </div>
-      </div>
-    </form>
+      </form>
+      <Notification type="success" message={message} />
+    </div>
   );
 };
 
