@@ -4,10 +4,12 @@ import personServices from '../services/persons';
 import ContactForm from './components/ContactForm';
 import ContactInfo from './components/ContactInfo';
 import Header from './components/Header';
+import Notification from './components/Notification';
 import Search from './components/Search';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     personServices.getAll().then((datas) => setPersons(datas));
@@ -24,6 +26,11 @@ const App = () => {
         .then((response) =>
           setPersons(persons.filter((person) => person.id !== id))
         );
+
+      setMessage(`Deleted ${persons.find((person) => person.id === id).name}`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 2000);
     }
   };
 
@@ -40,6 +47,7 @@ const App = () => {
           persons={persons}
           handleDelete={handleDelete}
         />
+        <Notification message={message} />
       </div>
     </div>
   );
