@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+
+import contactServices from '../../services/persons';
 
 const ContactForm = ({ setPersons, persons }) => {
   const [newName, setNewName] = useState('');
@@ -17,9 +18,9 @@ const ContactForm = ({ setPersons, persons }) => {
         id: persons.length + 1,
         number: newNumber,
       };
-      axios
-        .post('http://localhost:3001/persons', newPerson)
-        .then(({ data }) => setPersons([...persons, data]));
+      contactServices
+        .create(newPerson)
+        .then((person) => setPersons(persons.concat(person)));
     }
     setNewNumber('');
     setNewName('');
